@@ -1,0 +1,65 @@
+.pra-inline {
+  display: inline;
+  color:rgb(158, 230, 143)
+}
+
+.pra-inline-b {
+  display: inline-block;
+}
+.table-of-something {
+  border-collapse: collapse;
+  border: 2px solid rgb(4, 9, 3);
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+caption {
+  caption-side: top;
+  padding: 10px;
+  font-weight: bold;
+}
+
+thead,
+tfoot {
+  background-color: rgb(64, 110, 64);
+}
+
+th,
+td {
+  border: 1px solid rgb(7, 56, 13);
+  padding: 8px 10px;
+}
+
+td:last-of-type {
+  text-align: center;
+}
+
+tbody > tr:nth-of-type(even) {
+  background-color: rgb(157, 218, 217);
+}
+
+tfoot th {
+  text-align: right;
+}
+
+tfoot td {
+  font-weight: bold;
+}
+
+.fruit-list {
+  display: flex;
+  justify-content: space-around;
+}
+  
+.img{
+  width: 400px;
+
+  
+}
+
+.H1 {
+  text-align: center;
+  color: rgb(3, 56, 3);
+  font-family: initial;
+}
+
