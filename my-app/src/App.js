@@ -73,17 +73,21 @@ const ava = {
 <div>
   {ava.height}
 </div>
-<div className = "drop-down">
+<div className="drop-down">
 
 </div>
 
-<selector>
-  <option selected = "">
-    Select
+<select name="options" className = "Dropdown">
+  <option value="">
+    select
     </option>
+    <option value="Plant one"> Plant one</option>
+    <option value="Plant two"> Plant two</option>
+    <option value="Plant three"> Plant three</option>
+    <option value="Plant four"> Plant four</option>
 
 
-</selector>
+</select>
 </div>
 
 
