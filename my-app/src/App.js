@@ -1,52 +1,57 @@
 import './App.css';
 
 function App() {
+
+console.log(98)
+
+const x = ["Happy", "Sad", "Angry"]
+for (let emotions=0; emotions < x.length; emotions++){
+  console.log(x[emotions])
+}
+const ava = {
+  height: "tall"
+}
+
+
+
   return (
     <div className="App">
-      <h1 className="H1">HTML Elements</h1>
-      <h2>Headers</h2>
-      <span><b>something left </b></span>
-      <span className='pra-inline'><b>something right</b></span>
-      <br />
-      <span className='pra-inline-b'><b>something tall</b></span>
-      <p>What is Lorem Ipsum?
-        <b>Lorem Ipsum</b> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-      </p>
+      <h1 className="H1">Plants</h1>
       <table className="table-of-something">
-  <caption> Something </caption>
+  <caption>  </caption>
   <thead>
     <tr>
-      <th scope="col">Person</th>
-      <th scope="col">Most interest in</th>
-      <th scope="col">Age</th>
+      <th scope="col">Plant</th>
+      <th scope="col">Species</th>
+      <th scope="col">Growth in Inches</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th scope="row">Chris</th>
-      <td>HTML tables</td>
-      <td>22</td>
+      <th scope="row">Plant One</th>
+      <td>Inchplant</td>
+      <td>1 in</td>
     </tr>
     <tr>
-      <th scope="row">Dennis</th>
-      <td>Web accessibility</td>
-      <td>45</td>
+      <th scope="row">Plant Two</th>
+      <td>Tillandsia</td>
+      <td>3 in</td>
     </tr>
     <tr>
-      <th scope="row">Sarah</th>
-      <td>JavaScript frameworks</td>
-      <td>29</td>
+      <th scope="row">Plant Three</th>
+      <td>Sunflowers</td>
+      <td>10 in</td>
     </tr>
     <tr>
-      <th scope="row">Karen</th>
-      <td>Web performance</td>
-      <td>36</td>
+      <th scope="row">Plant Four</th>
+      <td>Parennials</td>
+      <td>4 in</td>
     </tr>
   </tbody>
   <tfoot>
     <tr>
-      <th scope="row" colspan="2">Average age</th>
-      <td>33</td>
+      <th scope="row" colspan="2">Average Growth</th>
+      <td>4.5 in</td>
     </tr>
   </tfoot>
 </table>
@@ -59,10 +64,34 @@ function App() {
       <li>Sleepy Smurf</li>
     </ul>
     <img className="img" src="../flower.png"/>
-  </div>
+    <br></br>
+  <a href= "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button">
+  <button className = "but" >CLICK</button>
+   </a>
+<br></br>
+<br></br>
+<div>
+  {ava.height}
+</div>
+<div className = "drop-down">
+
+</div>
+
+<selector>
+  <option selected = "">
+    Select
+    </option>
 
 
-  );
+</selector>
+</div>
+
+
+ );
+
 }
+
+
+
 
 export default App;

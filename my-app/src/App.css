@@ -1,11 +1,4 @@
-.pra-inline {
-  display: inline;
-  color:rgb(158, 230, 143)
-}
 
-.pra-inline-b {
-  display: inline-block;
-}
 .table-of-something {
   border-collapse: collapse;
   border: 2px solid rgb(4, 9, 3);
@@ -21,12 +14,12 @@ caption {
 
 thead,
 tfoot {
-  background-color: rgb(64, 110, 64);
+  background-color: rgb(43, 116, 43);
 }
 
 th,
 td {
-  border: 1px solid rgb(7, 56, 13);
+  border: 1px solid rgb(4, 9, 3);
   padding: 8px 10px;
 }
 
@@ -35,7 +28,7 @@ td:last-of-type {
 }
 
 tbody > tr:nth-of-type(even) {
-  background-color: rgb(157, 218, 217);
+  background-color: rgb(138, 214, 142);
 }
 
 tfoot th {
@@ -52,14 +45,22 @@ tfoot td {
 }
   
 .img{
-  width: 400px;
+  width: 80px;
 
   
 }
 
 .H1 {
   text-align: center;
-  color: rgb(3, 56, 3);
+  background-color: black;
+  color: rgb(251, 251, 251);
   font-family: initial;
+}
+
+.but {
+  font-size: 20px;
+  color: rgb(54, 88, 54);
+  float: left;
+
 }
 

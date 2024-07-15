@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <title>our DOM test</title>
     <style>
       #poke-nav {
         display: inline-block;
@@ -27,6 +26,7 @@
           <button>Load More</button>
         </span>
         <span id="poke-info">
+
         </span>
       </div>
     </header>
@@ -34,7 +34,7 @@
       let currentOffset = 0;
       let currentLimit = 100;
       let currentPokemon = [];
-      let currentPokemone2 = [];
+
       const bulba = {
        "sprites": {
           "back_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
@@ -45,33 +45,12 @@
           "front_female": null,
           "front_shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
         }
-  }
-  const ditto = {
-    "sprites": {
-      "back_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/12.png",
-      "back_female": null,
-      "back_shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/12.png",
-      "back_shiny_female": null,
-      "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/12.png",
-      "front_female": null,
-      "front_shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/12.png",
-  }
-}
-const charmander = {
-    "sprites": {
-    "back_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/7.png",
-    "back_female": null,
-    "back_shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/7.png",
-    "back_shiny_female": null,
-    "front_default": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png",
-    "front_female": null,
-    "front_shiny": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/7.png",
-    "front_shiny_female": null,
-  }
-}
+      }
+
       /**
        * data -> some kind of array of pokemon objects=
        */
+
        function displayPokemonImages(data) {
         let newSpriteHTML = '';
         for(let i=0;i<data.length;i++) {
@@ -84,38 +63,106 @@ const charmander = {
         const pokeContainer = document.getElementById("pokemon-img-container");
         pokeContainer.innerHTML = newSpriteHTML;
       }
+
+      function displayPokemonInfo(data) {
+        const imgUrl = data.sprites.front_default;
+        // using template literal =>
+        const pokeImageHTML = `
+        <img src="${imgUrl}" />
+        `;
+
+        const infoContainer = document.getElementById("poke-info");
+
+        infoContainer.innerHTML = pokeImageHTML;
+      }
+      
+      function clickPokemonName(event) {
+
+        const pokemonNumberClicked = event.target.attributes["data-pokemon-num"].nodeValue;
+
+        const url = "https://pokeapi.co/api/v2/pokemon/" + pokemonNumberClicked + "/";
+        fetch(url)
+        .then(handleResponse)
+        .then(displayPokemonInfo);
+      }
+
+      
       function displayPokemonNames(data) {
         let newSpriteHTML = '';
         for(let i=0;i<data.length;i++) {
           const poke = data[i];
+          const pokeUrl = data[i].url;
+          const pokeUrlArray = pokeUrl.split("/");
+          const pokeNumber = pokeUrlArray[6];
           const htmlPokeSpriteTemplate = `
-          <img src="${poke.sprites.front_default}" />
+          <span style="padding: 10px" data-pokemon-num="${pokeNumber}">
+            <button data-pokemon-num="${pokeNumber}">
+            ${poke.name}
+            </button>
+          </span>
           `;
           newSpriteHTML += htmlPokeSpriteTemplate;
         }
         const pokeContainer = document.getElementById("pokemon-img-container");
         pokeContainer.innerHTML = newSpriteHTML;
       }
+
+
+
       function handlePokemonData(data) {
         for(const poke of data.results) {
           currentPokemon.push(poke);
         }
         displayPokemonNames(currentPokemon);
       }
+
       function handleResponse(response) {
         return response.json();
       }
+
       function loadPokemon() {
         const pokeUrl = "https://pokeapi.co/api/v2/pokemon?offset=" + currentOffset + "&limit=" + currentLimit;
         fetch(pokeUrl)
         .then(handleResponse)
         .then(handlePokemonData);
-        const listOfPokemon = [bulba, ditto, charmander];
+
+        const listOfPokemon = [bulba];
         displayPokemonImages(listOfPokemon);
       }
+
+      /** 
+       * 1. get container element
+       * 2. attach listener
+       * 
+       */
+      function listenForPokemonClicks() {
+        const pokeContainer = document.getElementById("pokemon-img-container");
+
+        // clickPokemonName
+        // pokeContainer.onclick = clickPokemonName;
+        // pokeContainer -> our element
+        // onclick -> property called when someone clicks our element
+        // = -> sets onclick equal to our callback 
+        // clickPokemonName -> callback called when onclick is called
+
+        pokeContainer.onclick = clickPokemonName;
+      }
+
+
+      /**
+       * 
+          1. Define
+          - “function” keyword
+          - instructions to call later inside curly braces {}
+       */
       function load() {
         loadPokemon();
+        listenForPokemonClicks();
       }
+      
+
+      // assigning the load function to the onload property
+      // load is now a callback for window.onload
       window.onload = load;
     </script>
   </body>
