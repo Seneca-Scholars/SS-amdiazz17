@@ -4,13 +4,13 @@ function App() {
 
 console.log(98)
 
-const x = ["Happy", "Sad", "Angry"]
-for (let emotions=0; emotions < x.length; emotions++){
-  console.log(x[emotions])
-}
 const ava = {
   height: "tall"
+
 }
+
+
+
 
 
 
@@ -55,16 +55,32 @@ const ava = {
     </tr>
   </tfoot>
 </table>
-    <ol className="fruit-list">
-      <li>Grapes</li>
-      <li>Watermelon</li>
-    </ol>
-    <ul className="Smurf list">
-      <li>Papa Smurf</li>
-      <li>Sleepy Smurf</li>
-    </ul>
-    <img className="img" src="../flower.png"/>
-    <br></br>
+<select name="options" className = "Dropdown">
+  <option value="">
+    Select
+    </option>
+    <option value="Plant one"> Plant one</option>
+    <option value="Plant two"> Plant two</option>
+    <option value="Plant three"> Plant three</option>
+    <option value="Plant four"> Plant four</option>
+</select>
+<br></br>
+
+
+
+
+
+<ol className="fruit-list">
+    <li>Grapes</li>
+    <li>Watermelon</li>
+</ol>
+<ul className="Smurf list">
+  <li>Papa Smurf</li>
+  <li>Sleepy Smurf</li>
+</ul>
+
+<img className="img" src="../flower.png"/>
+  <br></br>
   <a href= "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button">
   <button className = "but" >CLICK</button>
    </a>
@@ -77,17 +93,7 @@ const ava = {
 
 </div>
 
-<select name="options" className = "Dropdown">
-  <option value="">
-    select
-    </option>
-    <option value="Plant one"> Plant one</option>
-    <option value="Plant two"> Plant two</option>
-    <option value="Plant three"> Plant three</option>
-    <option value="Plant four"> Plant four</option>
 
-
-</select>
 </div>
 
 

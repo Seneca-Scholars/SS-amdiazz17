@@ -98,16 +98,40 @@
   </style>
   <button onclick="document.location='https://www.w3schools.com/html/html_links.asp'" >Click</button>
 
-  <forms>
-    <input></forms>
-  </forms>
 
 <div style="font-family: Arial, Helvetica, sans-serif;">
   <div>Papa Smurf:</div>
   <div style="color:rgb(138, 62, 129)"> The Man of the Village </div>
   <div> Sleepy Smurf: </div>
 </div>
-  
+
+<input type="text" id="textInput" placeholder="Type Here"/>
+<button id="consoleLogButton">Submit </button>
+<script>
+// fucntion takes the input and logs it to the console but it's not utilized
+  function consoleLogInput() {
+    const input = document.getElementById("textInput").value
+    console.log(input)
+  }
+
+//when ckicked the fucntion vaildEmail checks if the email is vaild and logs it to the console
+  document.getElementById("consoleLogButton").addEventListener("click", validEmail)
+
+/* 
+this function checks if the email is vaild based on the special characters
+returns true or false in the console
+#workinprogress
+*/
+
+  function validEmail() {
+    const input = document.getElementById("textInput").value;
+    const specicalChar = ["@gmail.com"];
+    let checker = input.includes(specicalChar);
+    console.log(checker);
+  }
+
+</script>
+
 <div>
   <ul>
     <li>Brainy</li>
@@ -119,6 +143,8 @@
     <li>Watermelon</li>
   </ol>
 </div>
+
+
 
 </html>
 
