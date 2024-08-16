@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <title>Website</title>
+  </head>
+  <h1 >Plants</h1>
+  <style>
+    h1 {
+      background-color: rgb(2, 31, 2);
+      color: aliceblue;
+      border:2px solid black;
+      text-align: center;
+      font-size: 50px;
+    }
+   </style>
+  <body>
+    <div id="video-style" style="text-align: center;" >
+      <h2 style="color:black">Quick tips on caring for plants!</h2>
+    <iframe
+      class="i-frame-element"
+      src="https://www.youtube.com/embed/LZhnCxG5c6s?si=wavuB1EEs4rPSrEl"
+      width="400vw"
+      height="250"
+    >
+    </iframe>
+
+
+  </div>
+  <style>
+    video-style{
+      background-color: green;
+    }
+  </style>
+  <table className="table">
+    <caption>  </caption>
+      <thead>
+        <tr>
+          <th scope="col">Plant</th>
+          <th scope="col">Species</th>
+          <th scope="col">Growth in Inches</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Plant One</th>
+          <td>Inchplant</td>
+          <td>1 in</td>
+        </tr>
+        <tr>
+          <th scope="row">Plant Two</th>
+          <td>Tillandsia</td>
+          <td>3 in</td>
+        </tr>
+        <tr>
+          <th scope="row">Plant Three</th>
+          <td>Sunflowers</td>
+          <td>10 in</td>
+        </tr>
+        <tr>
+          <th scope="row">Plant Four</th>
+          <td>Parennials</td>
+          <td>4 in</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row" colspan="2">Average Growth</th>
+          <td>4.5 in</td>
+        </tr>
+      </tfoot>
+    </table>
+    <style>
+      table{
+        border-collapse: collapse;
+        border: 2px solid rgb(38, 41, 38);
+        font-family: sans-serif;
+        font-size: 0.9 rem;
+        letter-spacing: 1px;
+      }
+      thead,
+      tfoot {
+        background-color: rgb(43, 116, 43);
+      }
+
+      th,
+      td {
+        border: 1px solid rgb(4, 9, 3);
+        padding: 8px 10px;
+      }
+
+      td:last-of-type {
+        text-align: center;
+      }
+
+      tbody > tr:nth-of-type(even) {
+        background-color: rgb(138, 214, 142);
+      }
+
+      tfoot th {
+        text-align: right;
+      }
+
+      tfoot td {
+        font-weight: bold;
+      }
+
+    </style>
+<select name="options" id = "Dropdown">
+  <option value="">
+    Select
+    </option>
+    <option value="https://images.app.goo.gl/Cz4JS4UmfPmybS7B8"> Plant One</option>
+    <option value="https://images.app.goo.gl/UZhdAFVqKtAF2t25A"> Plant Two</option>
+    <option value="https://images.app.goo.gl/GVKkt7LSvsNzc53U9"> Plant Three</option>
+    <option value="https://images.app.goo.gl/msqnRXhWcEqtfRkQ6"> Plant Four</option>
+  </select>
+
+<button id="go" onclick="gotosite()">Go</button>
+<script>
+//when you click the button this function runs based on what you slected in the dropdown
+  function gotosite() {
+  window.location = document.getElementById("Dropdown").value;
+  } 
+</script>
+
+<br></br>
+
+<div>
+  <ul>
+    <li>Water</li>
+     <li>Soil</li> 
+     <li>Monitor</li>
+  </ul>
+  <ol>
+    <li>Buy the Plant</li>
+    <li>Love the Plant</li>
+  </ol>
+  <p><a href= "https://www.google.com/search?q=plant+stores+near+me&sca_esv=67eac9aa2b9499b8&sca_upv=1&biw=1003&bih=700&tbm=lcl&ei=BQqfZqmPDIvy0PEPvamTqAY&ved=0ahUKEwjppZf1g7yHAxULOTQIHb3UBGUQ4dUDCAk&uact=5&oq=plant+stores+near+me&gs_lp=Eg1nd3Mtd2l6LWxvY2FsIhRwbGFudCBzdG9yZXMgbmVhciBtZTIIEAAYgAQYyQMyCxAAGIAEGJIDGIoFMgsQABiABBiSAxiKBTIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgARI4CBQ6AJY-B5wBXgAkAEAmAFsoAGsCaoBBDEzLjG4AQPIAQD4AQGYAhOgAvAJwgIIEAAYgAQYkgPCAhAQABiABBixAxhDGMkDGIoFwgIKEAAYgAQYQxiKBcICDhAAGIAEGJECGMkDGIoFwgILEAAYgAQYkQIYigWYAwCIBgGSBwQxNi4zoAeBWw&sclient=gws-wiz-local#rlfi=hd:;si:;mv:[[42.0280117,-87.6172296],[41.7367998,-87.8333576]];tbs:lrf:!1m4!1u3!2m2!3m1!1e1!1m4!1u2!2m2!2m1!1e1!2m1!1e2!2m1!1e3!3sIAE,lf:1,lf_ui:10" target="blank">Link</a></p>
+  <style>
+    a:link {
+      color:green;
+      background-color: rgb(0, 255, 72);
+      text-decoration: none;
+
+    }
+    a:visited {
+      color: rgb(10, 255, 2);
+      background-color: rgba(0, 0, 0, 0.84);
+      text-decoration: none;
+
+    }
+    a:hover {
+      color: rgb(0, 0, 0);
+      background-color: rgb(9, 252, 9);
+      text-decoration: underline;
+    }
+    a:active {
+      color: violet;
+      background-color: black;
+      text-decoration: underline;
+    }
+  </style>
+<button onclick="document.location= 'https://www.google.com/search?sca_esv=67eac9aa2b9499b8&sca_upv=1&q=hydrangeas&udm=2&fbs=AEQNm0Aa4sjWe7Rqy32pFwRj0UkWd8nbOJfsBGGB5IQQO6L3J03RPjGV0MznOJ6Likin94qdboLj3Q68JUA18c-jew4Ul6bUAt0x_2HCG3Hy0HO7Q-2HQkJKzbZhU3zyikYcf6JDZ-wA9qMmdb0SdZTXU78UusNyDg15qHCwA-yoPT4BjEfSqSKB3Wi16uymI1NVClzquc8H-7xosBxP6G_J04P-4ZGQ1g&sa=X&ved=2ahUKEwjVqpSyhLyHAxXA5ckDHYKsCFIQtKgLegQIERAB&biw=1003&bih=700&dpr=2'" >Click</button>
+</div>
+
+<br></br>
+
+<input type="text" id="textInput" placeholder="Type Here"/>
+<button id="consoleLogButton">Submit </button>
+<script>
+// fucntion takes the input and logs it to the console but it's not utilized
+  function consoleLogInput() {
+    const input = document.getElementById("textInput").value
+    console.log(input)
+  }
+
+//when ckicked the fucntion vaildEmail checks if the email is vaild and logs it to the console
+  document.getElementById("consoleLogButton").addEventListener("click", validEmail)
+
+/* 
+this function checks if the email is vaild based on the special characters
+returns true or false in the console
+#workinprogress
+*/
+
+  function validEmail() {
+    const input = document.getElementById("textInput").value;
+    const specicalChar = ["@gmail.com"];
+    let checker = input.includes(specicalChar);
+    console.log(checker);
+  }
+
+</script>
+
+
+
+
+
+</html>
+

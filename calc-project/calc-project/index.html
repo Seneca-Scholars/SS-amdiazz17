@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> " " </title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div id="calculator">
+    <div id="display"></div>
+    <button onclick="appendNumber('7')">7</button>
+    <button onclick="appendNumber('8')">8</button>
+    <button onclick="appendNumber('9')">9</button>
+    <button onclick="appendOperator('+')">+</button><br>
+    <button onclick="appendNumber('4')">4</button>
+    <button onclick="appendNumber('5')">5</button>
+    <button onclick="appendNumber('6')">6</button>
+    <button onclick="appendOperator('-')">-</button><br>
+    <button onclick="appendNumber('1')">1</button>
+    <button onclick="appendNumber('2')">2</button>
+    <button onclick="appendNumber('3')">3</button>
+    <button onclick="appendOperator('*')">*</button><br>
+    <button onclick="appendNumber('0')">0</button>
+    <button onclick="appendNumber('.')">.</button>
+    <button onclick="calculate()">=</button>
+    <button onclick="appendOperator('/')">/</button>
+    <button id="clear" onclick="document.getElementById('display').value = ''">C</button>
+  </div>
+</body>
+</html>
+
+    <script>
+        let display = document.getElementById("display");
+        let currentInput= "";
+        let operator="";
+
+        function appendNumber(num){
+            currentInput += num;
+            display.textContent= currentInput;
+        }
+        function appendOperator(op){
+            operator=op;
+            currentInput+=op;
+            display.textContent=cuurentInput;
+        }
+        function calculate(){
+            let result;
+            try {
+                result = Function('return (' + currentInput + ')')();
+            } catch (error) {
+            display.textContent = "Error";
+            return;
+            }
+                display.textContent = result;
+                currentInput = result.toString();
+            }
+        let clearButton = document.getElementById("clear");
+        clearButton.addEventListener('click', function(){
+            currentInput="";
+            operator="";
+            display.textContent="";
+        });
+
+       
+
+
+
+    </script>
+</body>
+</html>
