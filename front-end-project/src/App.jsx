@@ -1,5 +1,29 @@
 import './App.css';
+
 function App() {
+  function loadData(){
+    const dataUrl = "https://jsonplaceholder.typicode.com/users"
+    fetch(dataUrl)
+    .then(handleResponse)
+    .then(handleUrlData);
+  }
+  function handleResponse(response){
+    return response.json();
+  }
+
+  function load(){
+    loadData();
+  }
+
+  window.onload = load;
+
+
+
+
+
+
+
+
   return (
     <div className="app">
       <header className="app-header">
