@@ -1,18 +1,25 @@
-
-header {
-  text-align:center;
-  font-size: 50px;
-  padding: 20px;
-}
 body {
   text-align:center;
   font-size: 35px;
 }
-.main {
-  display:flex;
-  justify-content: center;
-}
 table, td, th {
-  border: 1px solid gray;
+  border-collapse: collapse;
+  border: 3px solid white;
   padding:15px;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+.whole-table{
+  display: flex;
+  justify-content:center;
+}
+.even-row{
+  background-color: #A3A380;
+}
+.odd-row{
+  background-color: #EFEBCE;
+}
+th{
+  background-color: #EFEBCE;
+  font-weight: bold;
+
 }
