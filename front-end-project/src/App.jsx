@@ -28,7 +28,7 @@ function App() {
 
 
   return (
-    <div className="whole-table">
+    <div className="container">
       <table>
         <thead>
           <tr>
@@ -41,7 +41,6 @@ function App() {
           {/* .map iterates over all the objects in the array to generate table rows */}
           {data.map((user, index) => (
             <tr
-              key={user.id}
               className={index % 2 === 0 ? 'even-row' : 'odd-row'}
             >
               <td>{user.name}</td>
