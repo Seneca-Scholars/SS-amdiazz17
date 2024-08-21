@@ -6,7 +6,7 @@ function App() {
   const [data, setData] = useState([]);
     useEffect(() => {
       //fetches the data
-      fetch("https://jsonplaceholder.typicode.com/users")
+      fetch("/api/items")
           .then(response => {
             //if the request was unsuccuessful it throws an error
               if (!response.ok) {
@@ -34,18 +34,16 @@ function App() {
           <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Phone</th>
           </tr>
         </thead>
         <tbody>
           {/* .map iterates over all the objects in the array to generate table rows */}
-          {data.map((user, index) => (
+          {data.map((data, index) => (
             <tr
               className={index % 2 === 0 ? 'even-row' : 'odd-row'}
             >
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.phone}</td>
+              <td>{data.id}</td>
+              <td>{data.data}</td>
             </tr>
           ))}
         </tbody>
