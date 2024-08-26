@@ -7,10 +7,12 @@ import React, { useState, useEffect } from 'react';
 function App() {
   // Initialize state to store the list of items fetched from the server
   const [data, setData] = useState([]);
-  // Initialize state to manage form data, starting with an empty ID and name
+  // Initialize state to manage form data, starting with an empty ID, name, phone, and address
   const [formData, setFormData] = useState({
     id: null, // Track the ID of the item being edited (null if adding a new item)
     name: '', // Field for the item's name
+    phone: '', // Field for the item's phone number
+    address: '', // Field for the item's address
   });
 
   // useEffect hook to perform side effects when the component mounts
@@ -60,7 +62,11 @@ function App() {
         headers: {
           'Content-Type': 'application/json', // Set content type of the request body
         },
-        body: JSON.stringify({ name: formData.name }), // Send the updated name in JSON format
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          address: formData.address,
+        }), // Send the updated data in JSON format
       })
       .then(response => {
         // Check if the response from the server is successful
@@ -75,7 +81,7 @@ function App() {
         // Update the state with the updated item
         setData(prevData => prevData.map(item => item.id === updatedItem.id ? updatedItem : item));
         // Clear the form data
-        setFormData({ id: null, name: '' });
+        setFormData({ id: null, name: '', phone: '', address: '' });
       })
       .catch(error => {
         // Log any errors that occur during the update
@@ -88,7 +94,11 @@ function App() {
         headers: {
           'Content-Type': 'application/json', // Set content type of the request body
         },
-        body: JSON.stringify({ name: formData.name }), // Send the new item name in JSON format
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          address: formData.address,
+        }), // Send the new item data in JSON format
       })
       .then(response => {
         // Check if the response from the server is successful
@@ -103,16 +113,13 @@ function App() {
         // Update the state with the new item
         setData(prevData => [...prevData, newItem]);
         // Clear the form data
-        setFormData({ id: null, name: '' });
+        setFormData({ id: null, name: '', phone: '', address: '' });
       })
       .catch(error => {
         // Log any errors that occur during the addition
         console.error('Error posting data:', error);
       });
     }
-
-    // Reload the page to reflect the changes (not recommended if updating state properly)
-    window.location.reload();
   };
 
   // Function to handle deleting an item by its ID
@@ -140,11 +147,13 @@ function App() {
   };
 
   // Function to handle editing an item
-  const handleEdit = (name) => {
+  const handleEdit = (item) => {
     // Set the formData state with the item's current details
     setFormData({
-      id: name.id, // Set the ID of the item being edited
-      name: name.name, // Set the name of the item being edited
+      id: item.id, // Set the ID of the item being edited
+      name: item.name, // Set the name of the item being edited
+      phone: item.phone, // Set the phone number of the item being edited
+      address: item.address, // Set the address of the item being edited
     });
   };
 
@@ -157,20 +166,24 @@ function App() {
           <tr>
             <th>ID</th> {/* Column header for item IDs */}
             <th>Name</th> {/* Column header for item names */}
+            <th>Phone</th> {/* Column header for item phone numbers */}
+            <th>Address</th> {/* Column header for item addresses */}
             <th>Actions</th> {/* Column header for action buttons */}
           </tr>
         </thead>
         <tbody>
           {/* Iterate over the data array to create table rows for each item */}
-          {data.map((name, index) => (
-            <tr key={index} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
-              <td>{name.id}</td> {/* Display the item's ID */}
-              <td>{name.name}</td> {/* Display the item's name */}
+          {data.map((item, index) => (
+            <tr key={item.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
+              <td>{item.id}</td> {/* Display the item's ID */}
+              <td>{item.name}</td> {/* Display the item's name */}
+              <td>{item.phone}</td> {/* Display the item's phone number */}
+              <td>{item.address}</td> {/* Display the item's address */}
               <td>
                 {/* Button to edit the item, triggers handleEdit with the item's data */}
-                <button onClick={() => handleEdit(name)}>Edit</button>
+                <button onClick={() => handleEdit(item)}>Edit</button>
                 {/* Button to delete the item, triggers handleDelete with the item's ID */}
-                <button onClick={() => handleDelete(name.id)}>Delete</button>
+                <button onClick={() => handleDelete(item.id)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -186,6 +199,30 @@ function App() {
               type='text' // Input type is text
               name='name' // Name of the input field, used to update formData
               value={formData.name} // Controlled value of the input field
+              onChange={handleChange} // Function to call when the input value changes
+              required // Make this field mandatory for form submission
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Phone Number:
+            <input 
+              type='text' // Input type is text
+              name='phone' // Name of the input field, used to update formData
+              value={formData.phone} // Controlled value of the input field
+              onChange={handleChange} // Function to call when the input value changes
+              required // Make this field mandatory for form submission
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Home Address:
+            <input 
+              type='text' // Input type is text
+              name='address' // Name of the input field, used to update formData
+              value={formData.address} // Controlled value of the input field
               onChange={handleChange} // Function to call when the input value changes
               required // Make this field mandatory for form submission
             />
