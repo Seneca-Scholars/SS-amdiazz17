@@ -18,7 +18,7 @@ function App() {
   // useEffect hook to perform side effects when the component mounts
   useEffect(() => {
     // Fetch data from the server API endpoint
-    fetch("/api/items")
+    fetch("/api/users")
       .then(response => {
         // Check if the response from the server is successful
         if (!response.ok) {
@@ -57,7 +57,7 @@ function App() {
     // Check if we are updating an existing item or adding a new one
     if (formData.id) {
       // If formData.id exists, it means we are editing an existing item
-      fetch(`/api/items/${formData.id}`, {
+      fetch(`/api/users/${formData.id}`, {
         method: 'PUT', // Use PUT method to update the existing item
         headers: {
           'Content-Type': 'application/json', // Set content type of the request body
@@ -77,9 +77,9 @@ function App() {
         // Convert the response data to JSON format
         return response.json();
       })
-      .then(updatedItem => {
-        // Update the state with the updated item
-        setData(prevData => prevData.map(item => item.id === updatedItem.id ? updatedItem : item));
+      .then(updatedUser => {
+        // Update the state with the updated item ()
+        setData(prevData => prevData.map(user => user.id === updatedUser.id ? updatedUser : user));
         // Clear the form data
         setFormData({ id: null, name: '', phone: '', address: '' });
       })
@@ -89,7 +89,7 @@ function App() {
       });
     } else {
       // If formData.id does not exist, we are adding a new item
-      fetch('/api/items', {
+      fetch('/api/users', {
         method: 'POST', // Use POST method to add a new item
         headers: {
           'Content-Type': 'application/json', // Set content type of the request body
@@ -109,9 +109,9 @@ function App() {
         // Convert the response data to JSON format
         return response.json();
       })
-      .then(newItem => {
+      .then(newUser => {
         // Update the state with the new item
-        setData(prevData => [...prevData, newItem]);
+        setData(prevData => [...prevData, newUser]);
         // Clear the form data
         setFormData({ id: null, name: '', phone: '', address: '' });
       })
@@ -124,7 +124,7 @@ function App() {
 
   // Function to handle deleting an item by its ID
   const handleDelete = (id) => {
-    fetch(`/api/items/${id}`, {
+    fetch(`/api/users/${id}`, {
       method: 'DELETE', // Use DELETE method to remove the item
     })
     .then(response => {
@@ -138,7 +138,7 @@ function App() {
     })
     .then(() => {
       // Update the state to remove the deleted item
-      setData(prevData => prevData.filter(item => item.id !== id));
+      setData(prevData => prevData.filter(user => user.id !== id));
     })
     .catch(error => {
       // Log any errors that occur during deletion
@@ -147,13 +147,13 @@ function App() {
   };
 
   // Function to handle editing an item
-  const handleEdit = (item) => {
+  const handleEdit = (user) => {
     // Set the formData state with the item's current details
     setFormData({
-      id: item.id, // Set the ID of the item being edited
-      name: item.name, // Set the name of the item being edited
-      phone: item.phone, // Set the phone number of the item being edited
-      address: item.address, // Set the address of the item being edited
+      id: user.id, // Set the ID of the item being edited
+      name: user.name, // Set the name of the item being edited
+      phone: user.phone, // Set the phone number of the item being edited
+      address: user.address, // Set the address of the item being edited
     });
   };
 
@@ -173,17 +173,17 @@ function App() {
         </thead>
         <tbody>
           {/* Iterate over the data array to create table rows for each item */}
-          {data.map((item, index) => (
-            <tr key={item.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
-              <td>{item.id}</td> {/* Display the item's ID */}
-              <td>{item.name}</td> {/* Display the item's name */}
-              <td>{item.phone}</td> {/* Display the item's phone number */}
-              <td>{item.address}</td> {/* Display the item's address */}
+          {data.map((user, index) => (
+            <tr key={user.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
+              <td>{user.id}</td> {/* Display the item's ID */}
+              <td>{user.name}</td> {/* Display the item's name */}
+              <td>{user.phone}</td> {/* Display the item's phone number */}
+              <td>{user.address}</td> {/* Display the item's address */}
               <td>
                 {/* Button to edit the item, triggers handleEdit with the item's data */}
-                <button onClick={() => handleEdit(item)}>Edit</button>
+                <button onClick={() => handleEdit(user)}>Edit</button>
                 {/* Button to delete the item, triggers handleDelete with the item's ID */}
-                <button onClick={() => handleDelete(item.id)}>Delete</button>
+                <button onClick={() => handleDelete(user.id)}>Delete</button>
               </td>
             </tr>
           ))}
