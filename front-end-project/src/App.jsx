@@ -160,6 +160,7 @@ function App() {
   // Render the component
   return (
     <div className="container">
+      <h1>Personal Contact List</h1>
       {/* Render the table to display the list of items */}
       <table>
         <thead>
@@ -191,7 +192,7 @@ function App() {
       </table>
 
       {/* Form to add or edit items */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} class='form'>
         <div>
           <label>
             Name:
