@@ -16,7 +16,7 @@ const db = new sqlite3.Database("./backendb.db", (err) =>{
 //db.run is an async funtion
 db.run(`
   CREATE TABLE IF NOT EXISTS items (
-      id INTEGER PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       category TEXT NOT NULL,
       order_num INTEGER
@@ -36,23 +36,67 @@ app.use(express.json()); // This is used to parse JSON bodies.
 
 
 //get endpoint -> fetches data from the server
-async function getItems(req, res){
+async function getItems(req, res) {
   try {
-    // Retrieve all items from the 'items' table
-    const items = await db.all('SELECT * FROM items');
+    //waits to see if the promise is rejectd or resolved
+    const items = await new Promise((resolve, reject) => {
+      // Retrieve all items from the 'items' table empty paramters becuase we want all the data
+      //sees if there is an error and puts that in the rejected part 
+      db.all('SELECT * FROM items', [], (error, rows) => {
+        //if error send message becuase promise was rejected
+        if (error) {
+          reject("Failed to get items");
+          //if not the promise returns the rows of the table
+        } else {
+          resolve(rows);
+        }
+      });
+    });
 
-    // Send the retrieved items as JSON response
+    // Send the retrieved items as JSON response after promise is completed aand rows is returned
     res.json(items);
-} catch (error) {
+  } catch (error) {
     // Handle errors and send an error response
-    res.status(500).json(`${error}`);
-}
+    res.status(500).json({ error: error.message });
+  }
 }
 //post endpoint -> adds new data to the server
-app.post('/api/items', (req, res) => {
-    const newItem = req.body; // Data sent in the request body.
-    res.send(`Item added: ${newItem.name}`);
-  });
+//req contains data sent by the client
+async function addItem(req, res) {
+  try{
+    //retrieved the data sent to the request body
+    const newItem = req.body; 
+    console.log(newItem);
+    //validates the data if one is missing it will run the else block
+    if (newItem.name && newItem.category && newItem.order_num){
+      //inserts item in my database usinng sql -> the ? are placeholders
+      const insertItem = `INSERT INTO items (name, category, order_num) VALUES (?, ?, ?)`;
+      //creates an array of values from the newItem varible to be inserted to the database
+      //these values should be in the correct order
+      const newData= [newItem.name, newItem.category, newItem.order_num];
+      //runs the SQL commannd to modify the database -> in this case add data 
+      db.run(insertItem, newData, function(error) {
+        //sends an error message if there was one
+        if (error) {
+          return res.status(500).json({ error: err.message });
+        }  
+    //used to structure the response sent to the client after the successful insert
+      const itemFormat = {
+        //refers to an id of an inserted row
+        id: this.lastID, 
+      //using a spread opertator includes all the proerties of the new item 
+        ...newItem
+      };
+      res.status(201).json(itemFormat);
+    });
+  }else{
+    res.status(400).send("invaild data")
+  }
+  }catch(error){
+   // Handle errors and send an error response
+    res.status(500).json(`${error}`);
+  }
+};
 
 //put endpoint -> update existing data
 app.put('/api/items/:id', (req, res) => {
@@ -66,7 +110,7 @@ app.delete('/api/items/:id', (req, res) => {
     res.send(`Item with ID ${itemId} deleted`);
   });
 app.get('/api/items', getItems);
-
+app.post('/api/items', addItem);
 // db.close((err) => {
 //   if (err){
 //     console.error("Error opening up database", err.message);
