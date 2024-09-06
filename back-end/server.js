@@ -78,7 +78,7 @@ async function addItem(req, res) {
       db.run(insertItem, newData, function(error) {
         //sends an error message if there was one
         if (error) {
-          return res.status(500).json({ error: err.message });
+          return res.status(500).json({ error: error.message });
         }  
     //used to structure the response sent to the client after the successful insert
       const itemFormat = {
@@ -99,18 +99,45 @@ async function addItem(req, res) {
 };
 
 //put endpoint -> update existing data
-app.put('/api/items/:id', (req, res) => {
-    const itemId = req.params.id; // Access URL parameter.
-    res.send(`Item with ID ${itemId} updated`);
-  });
+async function updateItem(req, res){
+  //getting the string and parsing it into an integer (parseInt) 
+  //finding that in my ids using req.params with the paramter being id
+  const itemId = parseInt(req.params.id);
+  //get the updated item data sent to the request body
+  const updatedItem = req.body;
+  //vaildate data 
+  // if(updatedItem )
+  //update object
+  //return updated object
+
+}
+
 
 //delete endpoint
-app.delete('/api/items/:id', (req, res) => {
-    const itemId = req.params.id; 
-    res.send(`Item with ID ${itemId} deleted`);
-  });
+async function deleteItem(req, res){
+  const itemId = parseInt(req.params.id, 10);
+  //delting the item -> sql statement
+  const sqlDelete = 'DELETE FROM items WHERE id = ?';
+  db.run(sqlDelete, itemId, function(error) {
+    //sends an error message if there was one
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+})};
+
+
+
+
+
+
+
+
 app.get('/api/items', getItems);
 app.post('/api/items', addItem);
+app.put('/api/items/:id', updateItem)
+app.delete('/api/items/:id', deleteItem)
+
 // db.close((err) => {
 //   if (err){
 //     console.error("Error opening up database", err.message);
