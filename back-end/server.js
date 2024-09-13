@@ -10,7 +10,7 @@ const db = new sqlite3.Database("./backendb.db", (err) =>{
         console.error("Error opening up database", err.message);
         return;
     }
-    console.log("Connected to the backend DB")
+    console.log("Connected to the DB")
   })
 //creating a table if it does not exist already using sql 
 //db.run is an async funtion
@@ -19,7 +19,7 @@ db.run(`
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       category TEXT NOT NULL,
-      order_num INTEGER
+      order_num INTEGER NOT NULL
       )`
 ), (err) => {
   if (err){
@@ -100,28 +100,66 @@ async function addItem(req, res) {
 
 //put endpoint -> update existing data
 async function updateItem(req, res){
+  try{
   //getting the string and parsing it into an integer (parseInt) 
   //finding that in my ids using req.params with the paramter being id
-  const itemId = parseInt(req.params.id);
+  const itemId = parseInt(req.params.id, 10);
   //get the updated item data sent to the request body
-  const updatedItem = req.body;
-  //vaildate data 
-  // if(updatedItem )
-  //update object
-  //return updated object
+  const { name, category, order_num } = req.body;
+  //
+  if (name || category || order_num){
+         const updates = [];
+         const values = [];
 
+         if (name) {
+             updates.push('name = ?');
+             values.push(name);
+         }
+         if (category) {
+             updates.push('category = ?');
+             values.push(category);
+         }
+         if (order_num) {
+             updates.push('order_num = ?');
+             values.push(order_num);
+         }
+         // Add item ID to values
+         values.push(itemId); 
+
+         //spl for updating the table with the undated item information and joining it to the existing array
+         const sql = `UPDATE items SET ${updates.join(', ')} WHERE id = ?`; 
+         //runs the SQL commannd to modify the database -> in this case updates data 
+    db.run(sql, values, function(error) {
+        if (error) {
+          return res.status(500).json({ error: error.message });
+        }
+        if (result.changes === 0) {
+          return res.status(404).json({ error: "Item not found" });
+        }
+        res.status(200).json({ message: "Item updated successfully" });
+      });
+    } else {
+      res.status(400).json({ error: "No fields to update" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
+
 
 
 //delete endpoint
 async function deleteItem(req, res){
-  const itemId = parseInt(req.params.id, 10);
+  const itemId = parseInt(req.params.id)
   //delting the item -> sql statement
   const sqlDelete = 'DELETE FROM items WHERE id = ?';
   db.run(sqlDelete, itemId, function(error) {
     //sends an error message if there was one
     if (error) {
       return res.status(500).json({ error: error.message });
+    }else{
+      res.status(200).json({message: `delted item ${itemId} successfuly`})
+
     }
 
 })};
