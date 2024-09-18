@@ -1,9 +1,14 @@
-import './App.css'; // This line imports the CSS file that styles our page.
-import React, { useState, useEffect, useRef } from 'react'; // This imports the React library and some tools to help manage our page's state and effects.
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'; // This imports tools to show a Google Map on our page.
-import useGoogleMaps from './useGoogleMaps'; // This imports a custom hook to help us load the Google Maps API.
+// This line imports the CSS file that styles our page.
+import './App.css';
+// This imports the React library and some tools to help manage our page's state and effects.
+import React, { useState, useEffect, useRef } from 'react'; 
+// This imports tools to show a Google Map on our page.
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+// This imports a custom hook to help us load the Google Maps API.
+import useGoogleMaps from './useGoogleMaps';
 
-const apiKey = 'AIzaSyC1HOdITdS-2b4X5L_nV9-Ziyg0sErFkzA'; // This is our secret key to use the Google Maps API.
+// This is our secret key to use the Google Maps API. (Got this from Brianna's Repo)
+const apiKey = 'AIzaSyC1HOdITdS-2b4X5L_nV9-Ziyg0sErFkzA';
 
 function App() {
   // This box will hold all our list of friends.
@@ -18,7 +23,7 @@ function App() {
   });
 
   // This tells where the map should start looking.
-  const [mapCenter, setMapCenter] = useState({ lat: 0, lng: 0 });
+  const [mapCenter, setMapCenter] = useState({ lat: 38.7946, lng: -106.5348 });
 
   // This is like a bookmark for the autocomplete search tool.
   const autocompleteRef = useRef(null);
@@ -47,6 +52,7 @@ function App() {
   useEffect(() => {
     if (isGoogleMapsLoaded) {
       // Create the search tool for finding places on the map.
+      const google = window.google // reactjs use a linting rule that forbids unknown global variable
       const autocomplete = new google.maps.places.Autocomplete(
         document.getElementById('autocomplete-input'), // This is where we type to search for places.
         { types: ['geocode'] } // We’re looking for places on the Earth.
@@ -143,14 +149,14 @@ function App() {
   return (
     <div className="container"> {/* This is like a big box that holds everything on the page. */}
       <h1>Personal Contact List</h1> {/* This is the big title at the top. */}
-
+      <h2>Address Look-up</h2> {/* This is the title for the Google Map. */}
       {/* Search bar for finding places */}
       <div className="search-bar">
         <input
           id="autocomplete-input"
           type="text"
           placeholder="Search for a place" // This is where we type to find a place on the map.
-          style={{ width: '100%', padding: '8px', fontSize: '16px' }}
+          style={{ width: '97%', padding: '8px', fontSize: '16px' }}
         />
       </div>
 
@@ -200,7 +206,7 @@ function App() {
 
       {/* Render the form for adding or editing an item */}
       <form onSubmit={handleSubmit}>
-        <h2>{formData.id ? 'Edit' : 'Add'} User</h2> {/* This shows whether we are editing or adding a new friend. */}
+        <h2>{formData.id ? 'Edit' : 'Add'} Contact</h2> {/* This shows whether we are editing or adding a new friend. */}
         <label>
           Name:
           <input
@@ -228,7 +234,7 @@ function App() {
             onChange={handleChange} // Update the address when we type in the input field.
           />
         </label>
-        <button type="submit">{formData.id ? 'Update' : 'Add'} User</button> {/* This button submits the form to add or update a friend. */}
+        <button type="submit">{formData.id ? 'Update' : 'Add'} Contact</button> {/* This button submits the form to add or update a friend. */}
       </form>
     </div>
   );
