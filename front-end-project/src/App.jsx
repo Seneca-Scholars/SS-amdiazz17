@@ -33,36 +33,34 @@ function App() {
 
   // This runs once when the page first loads to get the list of friends.
   useEffect(() => {
-    fetch("/api/users") // This asks the server for a list of users.
-      .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok')) // If we get a good answer, turn it into JSON. If not, show an error.
+    fetch("/api/users")
+      .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok'))
       .then(fetchedData => {
-        setData(fetchedData); // Put the list of friends into our data box.
+        setData(fetchedData);
         if (fetchedData.length > 0) {
-          // Move the map to show where the first friend lives.
           setMapCenter({
             lat: parseFloat(fetchedData[0].latitude) || 0,
             lng: parseFloat(fetchedData[0].longitude) || 0,
           });
         }
       })
-      .catch(error => console.error('Error fetching data:', error)); // If there’s a problem, show an error message.
-  }, []); // This runs only once when the page first loads.
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
 
   // This runs when the map is ready.
   useEffect(() => {
     if (isGoogleMapsLoaded) {
-      // Create the search tool for finding places on the map.
-      const google = window.google // reactjs use a linting rule that forbids unknown global variable
+      const google = window.google; // Access the Google Maps library.
       const autocomplete = new google.maps.places.Autocomplete(
-        document.getElementById('autocomplete-input'), // This is where we type to search for places.
-        { types: ['geocode'] } // We’re looking for places on the Earth.
+        document.getElementById('autocomplete-input'), // Reference to the input field for address search.
+        { types: ['geocode'] } // Specify the type of places to search for.
       );
 
-      // When we choose a place from the search tool.
+      // This listener activates when a place is selected.
       autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace(); // Find out which place was chosen.
-        if (place.geometry) {
-          // Move the map to show the chosen place.
+        const place = autocomplete.getPlace();
+        // If the place has geometry, update the map center.
+        if (place.geometry && place.geometry.location) {
           setMapCenter({
             lat: place.geometry.location.lat(),
             lng: place.geometry.location.lng(),
@@ -70,108 +68,133 @@ function App() {
         }
       });
 
-      // Save the search tool for later use.
+      // Store the autocomplete reference for later use.
       autocompleteRef.current = autocomplete;
     }
-  }, [isGoogleMapsLoaded]); // This runs when the map is ready.
+  }, [isGoogleMapsLoaded]);
 
   // This function updates the form data when we type in the form.
   const handleChange = (event) => {
-    const { name, value } = event.target; // Get the name and value from the input field.
-    setFormData(prevFormData => ({ ...prevFormData, [name]: value })); // Update the form data with the new value.
+    const { name, value } = event.target; // Get the name and value from the event target.
+    setFormData(prevFormData => ({ ...prevFormData, [name]: value })); // Update the form data.
   };
 
-  // This function runs when we submit the form.
-  const handleSubmit = (event) => {
-    event.preventDefault(); // This stops the page from refreshing when we submit the form.
-
-    if (formData.id) {
-      // Update an existing friend’s information.
-      fetch(`/api/users/${formData.id}`, {
-        method: 'PUT', // We want to update this friend’s info.
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          address: formData.address,
-        }),
-      })
-      .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok')) // Check if the update was successful.
-      .then(updatedUser => {
-        setData(prevData => prevData.map(user => user.id === updatedUser.id ? updatedUser : user)); // Update the friend’s info in our list.
-        setFormData({ id: null, name: '', phone: '', address: '' }); // Clear the form.
-      })
-      .catch(error => console.error('Error updating data:', error)); // If there’s an error, show an error message.
-    } else {
-      // Add a new friend.
-      fetch('/api/users', {
-        method: 'POST', // We want to add a new friend.
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          address: formData.address,
-        }),
-      })
-      .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok')) // Check if adding was successful.
-      .then(newUser => {
-        setData(prevData => [...prevData, newUser]); // Add the new friend to our list.
-        setFormData({ id: null, name: '', phone: '', address: '' }); // Clear the form.
-      })
-      .catch(error => console.error('Error posting data:', error)); // If there’s an error, show an error message.
+  // New function to handle address geocoding.
+  const handleAddressSubmit = (event) => {
+    event.preventDefault(); // Prevent default form submission.
+    const address = formData.address; // Get the address from form data.
+    if (address) {
+      const geocoder = new window.google.maps.Geocoder(); // Create a new Geocoder instance.
+      geocoder.geocode({ address }, (results, status) => {
+        // If geocoding is successful, update the map center.
+        if (status === 'OK' && results[0]) {
+          const location = results[0].geometry.location;
+          setMapCenter({
+            lat: location.lat(),
+            lng: location.lng(),
+          });
+        } else {
+          console.error('Geocode was not successful for the following reason: ' + status);
+        }
+      });
     }
   };
 
-  // This function deletes a friend from the list.
-  const handleDelete = (id) => {
-    fetch(`/api/users/${id}`, { method: 'DELETE' }) // We want to remove this friend from the list.
-      .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok')) // Check if the deletion was successful.
-      .then(() => {
-        setData(prevData => prevData.filter(user => user.id !== id)); // Remove the friend from our list.
+  // This function handles form submission for adding or updating a user.
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent default form submission.
+
+    if (formData.id) { // Check if we're updating an existing user.
+      fetch(`/api/users/${formData.id}`, {
+        method: 'PUT', // Use PUT method to update the user.
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          address: formData.address,
+        }),
       })
-      .catch(error => console.error('Error deleting item:', error)); // If there’s an error, show an error message.
+      .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok'))
+      .then(updatedUser => {
+        // Update the local state with the updated user.
+        setData(prevData => prevData.map(user => user.id === updatedUser.id ? updatedUser : user));
+        // Reset the form data after submission.
+        setFormData({ id: null, name: '', phone: '', address: '' });
+      })
+      .catch(error => console.error('Error updating data:', error));
+    } else { // If no ID, we're adding a new user.
+      fetch('/api/users', {
+        method: 'POST', // Use POST method to add a new user.
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          address: formData.address,
+        }),
+      })
+      .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok'))
+      .then(newUser => {
+        // Update the local state with the new user.
+        setData(prevData => [...prevData, newUser]);
+        // Reset the form data after submission.
+        setFormData({ id: null, name: '', phone: '', address: '' });
+      })
+      .catch(error => console.error('Error posting data:', error));
+    }
   };
 
-  // This function sets up the form to edit an existing friend.
+  // This function handles user deletion.
+  const handleDelete = (id) => {
+    fetch(`/api/users/${id}`, { method: 'DELETE' }) // Send a DELETE request.
+      .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok'))
+      .then(() => {
+        // Update the local state by filtering out the deleted user.
+        setData(prevData => prevData.filter(user => user.id !== id));
+      })
+      .catch(error => console.error('Error deleting item:', error));
+  };
+
+  // This function pre-fills the form for editing a user.
   const handleEdit = (user) => {
     setFormData({
       id: user.id,
       name: user.name,
       phone: user.phone,
       address: user.address,
-    }); // Put the friend's info into the form so we can change it.
+    });
+    // Update the map center to the user's location.
     setMapCenter({
       lat: parseFloat(user.latitude) || 0,
       lng: parseFloat(user.longitude) || 0,
-    }); // Move the map to show where this friend lives.
+    });
   };
 
   return (
-    <div className="container"> {/* This is like a big box that holds everything on the page. */}
-      <h1>Personal Contact List</h1> {/* This is the big title at the top. */}
-      <h2>Address Look-up</h2> {/* This is the title for the Google Map. */}
+    <div className="container">
+      <h1>Personal Contact List</h1>
+      <h2>Address Look-up</h2>
       {/* Search bar for finding places */}
       <div className="search-bar">
         <input
           id="autocomplete-input"
           type="text"
-          placeholder="Search for a place" // This is where we type to find a place on the map.
+          placeholder="Search for a place"
           style={{ width: '97%', padding: '8px', fontSize: '16px' }}
         />
       </div>
 
       {/* Render the Google Map */}
-      <LoadScript googleMapsApiKey={apiKey} libraries={['places']}> {/* This loads the map magic */}
+      <LoadScript googleMapsApiKey={apiKey} libraries={['places']}>
         <GoogleMap
-          mapContainerStyle={{ height: "300px", width: "100%" }} // This makes the map 300px tall and full width.
-          center={mapCenter} // This tells the map where to start looking.
-          zoom={10} // This sets how zoomed in the map should be.
+          mapContainerStyle={{ height: "300px", width: "100%" }} // Style for the map container.
+          center={mapCenter} // Center of the map.
+          zoom={10} // Initial zoom level.
         >
           {data.map(user => (
             <Marker
-              key={user.id} // This is like a special tag for each friend on the map.
-              position={{ lat: parseFloat(user.latitude), lng: parseFloat(user.longitude) }} // This tells where to put the tag on the map.
-              title={user.name} // This shows the friend's name when we hover over the tag.
+              key={user.id} // Unique key for each marker.
+              position={{ lat: parseFloat(user.latitude), lng: parseFloat(user.longitude) }} // Position for the marker.
+              title={user.name} // Title that appears on hover.
             />
           ))}
         </GoogleMap>
@@ -181,23 +204,23 @@ function App() {
       <table>
         <thead>
           <tr>
-            <th>ID</th> {/* This is a header for the ID column. */}
-            <th>Name</th> {/* This is a header for the Name column. */}
-            <th>Phone</th> {/* This is a header for the Phone column. */}
-            <th>Address</th> {/* This is a header for the Address column. */}
-            <th>Actions</th> {/* This is a header for the Actions column. */}
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {data.map((user, index) => (
-            <tr key={user.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}> {/* This makes alternate rows look different. */}
-              <td>{user.id}</td> {/* This shows the friend's ID. */}
-              <td>{user.name}</td> {/* This shows the friend's name. */}
-              <td>{user.phone}</td> {/* This shows the friend's phone number. */}
-              <td>{user.address}</td> {/* This shows the friend's address. */}
+            <tr key={user.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
+              <td>{user.id}</td>
+              <td>{user.name}</td>
+              <td>{user.phone}</td>
+              <td>{user.address}</td>
               <td>
-                <button onClick={() => handleEdit(user)}>Edit</button> {/* This button lets us change a friend's info. */}
-                <button onClick={() => handleDelete(user.id)}>Delete</button> {/* This button lets us remove a friend from the list. */}
+                <button onClick={() => handleEdit(user)}>Edit</button> {/* Button to edit user */}
+                <button onClick={() => handleDelete(user.id)}>Delete</button> {/* Button to delete user */}
               </td>
             </tr>
           ))}
@@ -206,38 +229,38 @@ function App() {
 
       {/* Render the form for adding or editing an item */}
       <form onSubmit={handleSubmit}>
-        <h2>{formData.id ? 'Edit' : 'Add'} Contact</h2> {/* This shows whether we are editing or adding a new friend. */}
+        <h2>{formData.id ? 'Edit' : 'Add'} Contact</h2>
         <label>
           Name:
           <input
             type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange} // Update the name when we type in the input field.
+            name="name" // Name field in the form.
+            value={formData.name} // Current value of the name input.
+            onChange={handleChange} // Handle input change.
           />
         </label>
         <label>
           Phone:
           <input
             type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange} // Update the phone number when we type in the input field.
+            name="phone" // Phone field in the form.
+            value={formData.phone} // Current value of the phone input.
+            onChange={handleChange} // Handle input change.
           />
         </label>
         <label>
           Address:
           <input
             type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange} // Update the address when we type in the input field.
+            name="address" // Address field in the form.
+            value={formData.address} // Current value of the address input.
+            onChange={handleChange} // Handle input change.
           />
         </label>
-        <button type="submit">{formData.id ? 'Update' : 'Add'} Contact</button> {/* This button submits the form to add or update a friend. */}
+        <button type="submit">{formData.id ? 'Update' : 'Add'} Contact</button> {/* Submit button */}
       </form>
     </div>
   );
 }
 
-export default App; // This makes our App available for use in other files.
+export default App; // Export the App component for use in other files.
