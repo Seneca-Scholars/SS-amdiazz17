@@ -99,6 +99,21 @@ function App() {
       });
     }
   };
+// This function is to look-up an address that is in the table when clicked on.
+  const handleAddressLookup = (address) => {
+    const geocoder = new window.google.maps.Geocoder(); // Create a new Geocoder instance.
+    geocoder.geocode({ address }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        const location = results[0].geometry.location;
+        setMapCenter({
+          lat: location.lat(),
+          lng: location.lng(),
+        });
+      } else {
+        console.error('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  };
 
   // This function handles form submission for adding or updating a user.
   const handleSubmit = (event) => {
@@ -112,6 +127,7 @@ function App() {
           name: formData.name,
           phone: formData.phone,
           address: formData.address,
+          email: formData.email,
         }),
       })
       .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok'))
@@ -119,7 +135,7 @@ function App() {
         // Update the local state with the updated user.
         setData(prevData => prevData.map(user => user.id === updatedUser.id ? updatedUser : user));
         // Reset the form data after submission.
-        setFormData({ id: null, name: '', phone: '', address: '' });
+        setFormData({ id: null, name: '', phone: '', address: '', email:'' });
       })
       .catch(error => console.error('Error updating data:', error));
     } else { // If no ID, we're adding a new user.
@@ -130,6 +146,7 @@ function App() {
           name: formData.name,
           phone: formData.phone,
           address: formData.address,
+          email: formData.email,
         }),
       })
       .then(response => response.ok ? response.json() : Promise.reject('Network response was not ok'))
@@ -137,7 +154,7 @@ function App() {
         // Update the local state with the new user.
         setData(prevData => [...prevData, newUser]);
         // Reset the form data after submission.
-        setFormData({ id: null, name: '', phone: '', address: '' });
+        setFormData({ id: null, name: '', phone: '', address: '', email: '' });
       })
       .catch(error => console.error('Error posting data:', error));
     }
@@ -161,6 +178,7 @@ function App() {
       name: user.name,
       phone: user.phone,
       address: user.address,
+      email: user.email,
     });
     // Update the map center to the user's location.
     setMapCenter({
@@ -208,6 +226,7 @@ function App() {
             <th>Name</th>
             <th>Phone</th>
             <th>Address</th>
+            <th>Email</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -217,7 +236,20 @@ function App() {
               <td>{user.id}</td>
               <td>{user.name}</td>
               <td>{user.phone}</td>
-              <td>{user.address}</td>
+              <td>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent default link behavior
+                    handleAddressLookup(user.address); // Call the function to lookup the address
+                  }}
+                >
+                  {user.address}
+                </a>
+              </td>
+              <td>
+                <a href={`mailto:${user.email}`} target="_blank" rel="noopener noreferrer">{user.email}</a>
+              </td>
               <td>
                 <button onClick={() => handleEdit(user)}>Edit</button> {/* Button to edit user */}
                 <button onClick={() => handleDelete(user.id)}>Delete</button> {/* Button to delete user */}
@@ -254,6 +286,15 @@ function App() {
             type="text"
             name="address" // Address field in the form.
             value={formData.address} // Current value of the address input.
+            onChange={handleChange} // Handle input change.
+          />
+        </label>
+        <label>
+          Email:
+          <input
+            type="text"
+            name="email" // Email Address field in the form
+            value={formData.email} // Current value of the email input.
             onChange={handleChange} // Handle input change.
           />
         </label>
