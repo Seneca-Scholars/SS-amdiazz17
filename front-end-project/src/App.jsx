@@ -128,14 +128,14 @@ function App() {
   };
 
   // Fix the default marker icon
-  delete L.Icon.Default.prototype._getIconUrl;
-  L.Icon.Default.prototype._getIconUrl = function (name) {
-    const ices = {
-      iconUrl: new URL('path/to/marker-icon.png', import.meta.url).href,
-      shadowUrl: new URL('path/to/marker-shadow.png', import.meta.url).href,
-    };
-    return ices[name];
-  };
+  // delete L.Icon.Default.prototype._getIconUrl;
+  // L.Icon.Default.prototype._getIconUrl = function (name) {
+  //   const ices = {
+  //     iconUrl: new URL('path/to/marker-icon.png', import.meta.url).href,
+  //     shadowUrl: new URL('path/to/marker-shadow.png', import.meta.url).href,
+  //   };
+  //   return ices[name];
+  // };
 
   return (
     <div className="container">
