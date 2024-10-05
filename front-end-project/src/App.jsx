@@ -2,6 +2,49 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 
 function App() {
+  const [id, setid]= useState('');
+  const [formInput, setformInput]= useState({
+    id: null,
+    name: "",
+    category: ""
+  })
+
+  const addData = () => {
+    if (formInput.id){
+    fetch(`api/items/${formInput.id}`,{
+    'method': 'PUT',
+    'headers':{
+      'Content-Type': 'application/json',
+    },
+    'body': JSON.stringify({
+      name: formInput.name,
+      category: formInput.category
+    }),
+    })
+    .then(response => {
+      return response.json
+    })
+    .then(updateItem =>{
+      setData(prevData => prevData.map()
+    )})
+    .catch(error => console.log(error));
+  }else{
+
+  }
+};
+// const handleChange = (e) = {
+//   const {name, value} = e.target
+//   setformInput{
+//     ...formInput,
+//   }
+
+}
+
+
+
+
+
+
   //set to an empty strinng before we fetch the data
   const [data, setData] = useState([]);
     useEffect(() => {
@@ -24,7 +67,7 @@ function App() {
               console.error('Error fetching data:', error);
           });
 
-  }, []);
+}, []);
   return (
     <div className="container">
       <table>
@@ -50,15 +93,34 @@ function App() {
           ))}
         </tbody>
       </table>
+      <form className='form'>
+      <div>
       <label>
-            Enter a Game Here
+            Enter a Game Here:
       </label>
-            <input></input>
-
-      <button className='buttons'>Submit</button>
-
-    </div>
+            <input
+            type="text"
+            name= "name"
+            required
+            handlechange={handleChange}
+            value= {formInput.name}
+            />
+      </div>
+      <div>
+        <label>
+          Enter Categroy Here:
+        </label>
+        <input
+        type="text"
+        name= "category"
+        required
+        handlechange={handleChange}
+        value= {formInput.category}
+        />
+      </div>
+      </form>
+      </div>
   );
-}
+
 
 export default App;

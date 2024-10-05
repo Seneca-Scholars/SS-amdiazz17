@@ -1,5 +1,5 @@
 const express = require('express'); //imports the express module
-const sqlite3 = require('sqlite3').verbose(); 
+const sqlite3 = require('sqlite3').verbose();
 const app = express(); //initializes a new express apllication
 const port = 3003;
 
@@ -12,7 +12,7 @@ const db = new sqlite3.Database("./backendb.db", (err) =>{
     }
     console.log("Connected to the DB")
   })
-//creating a table if it does not exist already using sql 
+//creating a table if it does not exist already using sql
 //db.run is an async funtion
 db.run(`
   CREATE TABLE IF NOT EXISTS items (
@@ -25,8 +25,7 @@ db.run(`
   if (err){
     console.error("Error creating the table", err)
   }
-} 
-
+}
 //opens on the correct port
 app.listen(port, () => {
     console.log(`server running on port ${port}`);
@@ -41,7 +40,7 @@ async function getItems(req, res) {
     //waits to see if the promise is rejectd or resolved
     const items = await new Promise((resolve, reject) => {
       // Retrieve all items from the 'items' table empty paramters becuase we want all the data
-      //sees if there is an error and puts that in the rejected part 
+      //sees if there is an error and puts that in the rejected part
       db.all('SELECT * FROM items', [], (error, rows) => {
         //if error send message becuase promise was rejected
         if (error) {
@@ -65,7 +64,7 @@ async function getItems(req, res) {
 async function addItem(req, res) {
   try{
     //retrieved the data sent to the request body
-    const newItem = req.body; 
+    const newItem = req.body;
     console.log(newItem);
     //validates the data if one is missing it will run the else block
     if (newItem.name && newItem.category && newItem.order_num){
@@ -74,17 +73,17 @@ async function addItem(req, res) {
       //creates an array of values from the newItem varible to be inserted to the database
       //these values should be in the correct order
       const newData= [newItem.name, newItem.category, newItem.order_num];
-      //runs the SQL commannd to modify the database -> in this case add data 
+      //runs the SQL commannd to modify the database -> in this case add data
       db.run(insertItem, newData, function(error) {
         //sends an error message if there was one
         if (error) {
           return res.status(500).json({ error: error.message });
-        }  
+        }
     //used to structure the response sent to the client after the successful insert
       const itemFormat = {
         //refers to an id of an inserted row
-        id: this.lastID, 
-      //using a spread opertator includes all the proerties of the new item 
+        id: this.lastID,
+      //using a spread opertator includes all the proerties of the new item
         ...newItem
       };
       res.status(201).json(itemFormat);
@@ -101,7 +100,7 @@ async function addItem(req, res) {
 //put endpoint -> update existing data
 async function updateItem(req, res){
   try{
-  //getting the string and parsing it into an integer (parseInt) 
+  //getting the string and parsing it into an integer (parseInt)
   //finding that in my ids using req.params with the paramter being id
   const itemId = parseInt(req.params.id, 10);
   //get the updated item data sent to the request body
@@ -124,11 +123,11 @@ async function updateItem(req, res){
              values.push(order_num);
          }
          // Add item ID to values
-         values.push(itemId); 
+         values.push(itemId);
 
          //spl for updating the table with the undated item information and joining it to the existing array
-         const sql = `UPDATE items SET ${updates.join(', ')} WHERE id = ?`; 
-         //runs the SQL commannd to modify the database -> in this case updates data 
+         const sql = `UPDATE items SET ${updates.join(', ')} WHERE id = ?`;
+         //runs the SQL commannd to modify the database -> in this case updates data
     db.run(sql, values, function(error) {
         if (error) {
           return res.status(500).json({ error: error.message });
