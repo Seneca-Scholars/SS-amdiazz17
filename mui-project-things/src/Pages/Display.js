@@ -1,7 +1,7 @@
 
 import "./Display.css"
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid2';
 
 export function Table() {
   const items =[

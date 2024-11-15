@@ -38,3 +38,8 @@ body {
   .form{
     font-size: 25px;
   }
+.spotlight-container{
+  display: grid;
+  grid-template-columns: 40% 60%;
+
+}

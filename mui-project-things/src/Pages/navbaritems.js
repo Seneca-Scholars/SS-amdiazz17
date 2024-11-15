@@ -1,20 +1,19 @@
 import HomeIcon from '@mui/icons-material/Home';
-
-import MapIcon from '@mui/icons-material/Map';
 import TableChartIcon from '@mui/icons-material/TableChart';
+import ForestIcon from '@mui/icons-material/Forest';
 export const MainNavbarItems = [
     {
         id: 0,
         icon: <HomeIcon/>,
         label: "Home",
-        route: "/home"
+        route: "/"
 
     },
     {
         id: 1,
-        icon: <MapIcon/>,
-        label: "Map",
-        route: "/map"
+        icon: <ForestIcon/>,
+        label: "Plants",
+        route: "/plants"
 
     },
     {
