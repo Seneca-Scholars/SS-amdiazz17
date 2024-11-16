@@ -40,6 +40,64 @@ body {
   }
 .spotlight-container{
   display: grid;
-  grid-template-columns: 40% 60%;
+  grid-template-columns: 25% 75%;
+  margin-top: 100px;
+  font-size: medium;
+  width: 1035px;
+}
+.spotlight-icon{
+  background-color: white;
+  height: 250px;
+  margin-top: -25px;
+  border: 1px solid black;
+  border-radius: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.spotlight-text{
+  background-color: rgb(138, 138, 138);
+  height: 200px;
+}
+.events-container{
+  display: flex;
 
+}
+.event-cards{
+  width: 325px;
+  margin: 10px;
+  background-color: white;
+  font-size: 20px;
+  box-shadow: 5px 5px 30px grey;
+  margin-top: 100px;
+}
+.event-description{
+  background-color:  rgb(138, 138, 138);
+  height: 400px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+.event-date{
+  height: 300px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  background:
+  /* Right bottom triangle*/
+  linear-gradient(to bottom right,transparent 49.5%, rgb(138, 138, 138) 50%) bottom right,
+  /* left bottom triangle*/
+  linear-gradient(to bottom left ,transparent 49.5%, rgb(138, 138, 138) 50%) bottom left ,
+  rgb(255, 255, 255);
+background-size: 50% 30%; /* Width height*/
+background-repeat:no-repeat;
+}
+.body{
+  font-family:Georgia, 'Times New Roman', Times, serif;
+}
+.begining-container{
+  background-color: grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
