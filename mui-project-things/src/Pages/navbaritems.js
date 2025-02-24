@@ -1,6 +1,8 @@
 import HomeIcon from '@mui/icons-material/Home';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import ForestIcon from '@mui/icons-material/Forest';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
 export const MainNavbarItems = [
     {
         id: 0,
@@ -22,5 +24,18 @@ export const MainNavbarItems = [
         label: "Table",
         route: "/table"
 
+    },
+    {
+        id: 3,
+        icon: <CalendarMonthIcon/>,
+        label: "Calender",
+        route: "/calender"
+
+    },
+    {
+        id: 4,
+        icon: <Brightness4Icon/>,
+        lable: "Dark Mode",
+        route: "/dm"
     }
 ]

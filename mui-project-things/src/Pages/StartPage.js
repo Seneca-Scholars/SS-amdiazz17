@@ -1,4 +1,4 @@
-import "./Display.css"
+import "./Display.scss"
 import ForestIcon from '@mui/icons-material/Forest';
 export function Home() {
 
@@ -7,15 +7,6 @@ export function Home() {
       <div className="begining-container">
         <h1>Volunteer Sphere</h1>
       </div>
-
-
-
-
-
-
-
-
-
     <div className="spotlight-container">
     <div className="spotlight-icon">
       <ForestIcon style={{ fontSize:"200px" }}/>

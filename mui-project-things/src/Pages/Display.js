@@ -1,5 +1,5 @@
 
-import "./Display.css"
+import "./Display.scss"
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid2';
 
