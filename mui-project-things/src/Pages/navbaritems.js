@@ -35,7 +35,7 @@ export const MainNavbarItems = [
     {
         id: 4,
         icon: <Brightness4Icon/>,
-        lable: "Dark Mode",
+        label: "Dark Mode",
         route: "/dm"
     }
 ]

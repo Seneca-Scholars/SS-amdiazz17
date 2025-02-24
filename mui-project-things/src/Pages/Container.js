@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { DarkModeContext } from "../dmcontext";
+import { DarkModeContext } from "./dmcontext";
 import { Lightswitch } from "./lightswitch"
 import "./Display.scss"
 export function Container(){

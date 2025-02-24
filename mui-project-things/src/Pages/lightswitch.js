@@ -1,5 +1,7 @@
 import { useContext } from "react";
-import { DarkModeContext } from "../dmcontext";
+import { DarkModeContext } from "./dmcontext";
+import "@theme-toggles/react/css/Lightbulb.css"
+import { Lightbulb } from "@theme-toggles/react"
 
 export function Lightswitch() {
     const context = useContext(DarkModeContext);
@@ -9,19 +11,13 @@ export function Lightswitch() {
         return null;
     }
 
-    const { darkMode, toggleDarkMode } = context;
+    const {darkMode, toggleDarkMode } = context;
 
     const handleClick = () => {
         toggleDarkMode();
     };
 
     return (
-        <div className="Lightswitch">
-        <button onClick={handleClick}>Dark Mode</button>
-        </div>
+        <Lightbulb className="Lightswitch" toggled={darkMode} onClick={handleClick} duration={750} reversed/>
     );
 }
-/*
-<div className="Lightswitch">
-<Lightbulb duration={750} reversed onClick={handleClick} />
-</div>*/
